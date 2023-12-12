@@ -1,0 +1,22 @@
+{
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "wrangler pages dev dist",
+    "deploy": "$npm_execpath run build && wrangler pages deploy dist",
+    "format": "prettier --write {src,public}"
+  },
+  "dependencies": {
+    "hono": "^3.11.4",
+    "valibot": "^0.24.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20231121.0",
+    "@hono/vite-cloudflare-pages": "^0.1.1",
+    "@hono/vite-dev-server": "^0.3.0",
+    "prettier": "^4.0.0-alpha.4",
+    "vite": "^5.0.7",
+    "wrangler": "^3.18.0"
+  }
+}
