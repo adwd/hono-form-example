@@ -13,7 +13,7 @@ import {
 
 const FormSchema = object({
   name: string([
-    minLength(1, '件名を入力してください'),
+    minLength(1, '名前を入力してください'),
     custom((input) => input.toLowerCase() !== 'john', 'Johnは使えません'),
     custom((input) => input.toLowerCase() !== 'bob', 'Bobは使えません'),
   ]),
