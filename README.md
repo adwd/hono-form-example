@@ -1,8 +1,8 @@
 ```sh
-pnpm i
-pnpm dev
+npm i
+npm dev
 ```
 
 ```sh
-pnpm run deploy
+npm run deploy
 ```

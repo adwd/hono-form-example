@@ -1,34 +1,32 @@
 import { BodyData } from 'hono/utils/body';
-import {
-  FlatErrors,
-  Input,
-  custom,
-  email,
-  flatten,
-  minLength,
-  object,
-  safeParse,
-  string,
-} from 'valibot';
+import * as v from 'valibot';
 
-const FormSchema = object({
-  name: string([
-    minLength(1, '名前を入力してください'),
-    custom((input) => input.toLowerCase() !== 'john', 'Johnは使えません'),
-    custom((input) => input.toLowerCase() !== 'bob', 'Bobは使えません'),
-  ]),
-  email: string([
-    email(),
-    custom(
-      (input) => !input.includes('example.com'),
+const FormSchema = v.object({
+  name: v.pipe(
+    v.string(),
+    v.minLength(1, '名前を入力してください'),
+    v.custom(
+      (input) => typeof input !== 'string' || input.toLowerCase() !== 'john',
+      'Johnは使えません',
+    ),
+    v.custom(
+      (input) => typeof input !== 'string' || input.toLowerCase() !== 'bob',
+      'Bobは使えません',
+    ),
+  ),
+  email: v.pipe(
+    v.string(),
+    v.email(),
+    v.custom(
+      (input) => typeof input !== 'string' || !input.includes('example.com'),
       'example.comは使えません',
     ),
-  ]),
+  ),
 });
 
-export type FormValue = Input<typeof FormSchema>;
+type FormValue = v.InferOutput<typeof FormSchema>;
 
-export type FormErrors = FlatErrors<typeof FormSchema>['nested'];
+export type FormErrors = v.FlatErrors<typeof FormSchema>['nested'];
 
 type ParseFormResult =
   | {
@@ -41,15 +39,13 @@ type ParseFormResult =
       errors: FormErrors;
     };
 
-export function parseForm(
-  body: BodyData,
-): ParseFormResult {
-  const result = safeParse(FormSchema, body);
+export function parseForm(body: BodyData): ParseFormResult {
+  const result = v.safeParse(FormSchema, body);
 
   if (result.success) {
     return { ok: true, form: result.output };
   } else {
-    const errors = flatten(result.issues);
+    const errors = v.flatten(result.issues);
     console.log(errors);
     return { ok: false, form: body, errors: errors.nested };
   }

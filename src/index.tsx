@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { renderer } from './renderer';
 import { parseForm } from './form-schema';
 import { FC } from 'hono/jsx';
+import { IntrinsicElements } from 'hono/dist/types/jsx/intrinsic-elements';
 
 const app = new Hono();
 
@@ -29,7 +30,7 @@ app.get('/', async (c) => {
 
 app.post('/', async (c) => {
   const message = await fetchMessage();
-  
+
   const body = await c.req.parseBody();
   const result = parseForm(body);
 
@@ -60,7 +61,7 @@ app.post('/', async (c) => {
           name="name"
           value={form.name as string}
           required
-          errors={errors.name}
+          errors={errors?.name}
         />
         <Input
           label="メールアドレス"
@@ -68,7 +69,7 @@ app.post('/', async (c) => {
           name="email"
           value={form.email as string}
           required
-          errors={errors.email}
+          errors={errors?.email}
         />
 
         <div class="divider"></div>
@@ -81,7 +82,7 @@ app.post('/', async (c) => {
 });
 
 const Input: FC<
-  { label: string; errors?: string[] } & Hono.InputHTMLAttributes
+  { label: string; errors?: string[] } & IntrinsicElements['input']
 > = (props) => {
   const { label, errors, ...inputProps } = props;
   const { required } = inputProps;
