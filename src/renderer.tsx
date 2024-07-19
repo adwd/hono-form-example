@@ -9,7 +9,7 @@ export const renderer = jsxRenderer(
           <meta charset="UTF-8" />
           <meta name="viewport" content="width=devide-width, initial-scale=1" />
           <link
-            href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css"
+            href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css"
             rel="stylesheet"
             type="text/css"
           />
